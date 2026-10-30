@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Инструкции по подключению</title>
+    <style>
+        /* Базовые стили и плавная прокрутка */
+        html { scroll-behavior: smooth; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; margin: 0; padding: 20px; color: #333; background: #fafafa; }
+        h1 { color: #222; text-align: center; margin-bottom: 30px; }
+        
+        h2, h3 { scroll-margin-top: 25px; }
+        h2 { color: #0056b3; border-bottom: 2px solid #0056b3; padding-bottom: 5px; margin-top: 0; }
+        h3 { color: #333; margin-top: 25px; }
+        
+        /* Сетка для бокового меню и контента */
+        .page-wrapper { display: flex; max-width: 1000px; margin: 0 auto; gap: 30px; align-items: flex-start; }
+        
+        /* Боковое меню */
+        .sidebar { flex: 0 0 250px; position: sticky; top: 20px; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .sidebar strong { display: block; margin-bottom: 15px; font-size: 1.1em; color: #222; border-bottom: 1px solid #eaeaea; padding-bottom: 10px; }
+        .sidebar ul { list-style: none; padding: 0; margin: 0; }
+        .sidebar li { margin-bottom: 10px; font-size: 0.95em; }
+        .sidebar li ul { padding-left: 15px; margin-top: 8px; border-left: 2px solid #f0f0f0; }
+        .sidebar li ul li { margin-bottom: 8px; font-size: 0.9em; }
+        .sidebar a { text-decoration: none; color: #555; transition: color 0.2s; display: block; }
+        .sidebar a:hover { color: #0088cc; }
+
+        /* Основной контент */
+        .content { flex: 1; min-width: 0; }
+        .block { background: #fff; padding: 20px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .why-happ { background: #eef7ff; padding: 15px; border-radius: 8px; font-size: 0.95em; margin-bottom: 20px; }
+        .alert-box { background: #fff3cd; color: #856404; padding: 15px; border-radius: 8px; font-size: 0.95em; margin-top: 25px; border: 1px solid #ffeeba; }
+        .alert-box strong { color: #856404; display: block; margin-bottom: 10px; border-bottom: 1px solid #ffeeba; padding-bottom: 5px; font-size: 1.05em; }
+        .content ul { padding-left: 20px; }
+        .content li { margin-bottom: 8px; }
+        
+        a.button, button { display: block; width: 100%; box-sizing: border-box; background: #0088cc; color: #fff; padding: 14px 15px; text-decoration: none; border-radius: 8px; margin-bottom: 12px; text-align: center; font-weight: bold; border: none; cursor: pointer; font-size: 16px; transition: background 0.2s; }
+        a.button:hover, button:hover { background: #0077b3; }
+        .copy-btn { background: #28a745; }
+        .copy-btn:hover { background: #218838; }
+        .step-text { font-size: 1.05em; font-weight: 500; margin-bottom: 10px; }
+        code { background: #f4f4f4; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 0.95em; color: #d63384; word-break: break-all; }
+
+        /* Стили галереи */
+        .image-gallery { display: flex; overflow-x: auto; gap: 12px; padding: 10px 0 15px 0; -webkit-overflow-scrolling: touch; scroll-snap-type: x mandatory; }
+        .image-gallery img { height: 250px; width: auto; flex-shrink: 0; border-radius: 8px; border: 1px solid #ddd; scroll-snap-align: start; cursor: zoom-in; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .image-gallery::-webkit-scrollbar { height: 8px; }
+        .image-gallery::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+        .image-gallery::-webkit-scrollbar-thumb { background: #bbb; border-radius: 4px; }
+        .image-gallery::-webkit-scrollbar-thumb:hover { background: #888; }
+        
+        /* Всплывающее окно */
+        #lightbox { display: none; position: fixed; z-index: 9999; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); align-items: center; justify-content: center; cursor: zoom-out; opacity: 0; transition: opacity 0.2s ease; }
+        #lightbox.show { opacity: 1; }
+        #lightbox img { max-width: 95%; max-height: 95%; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); user-select: none; -webkit-user-drag: none; }
+
+        /* Адаптивность для телефонов */
+        @media (max-width: 800px) {
+            .page-wrapper { flex-direction: column; gap: 15px; }
+            .sidebar { flex: none; position: static; box-sizing: border-box; width: 100%; padding: 15px; margin-bottom: 10px; }
+            .sidebar ul { display: flex; flex-wrap: wrap; gap: 10px; }
+            .sidebar > ul > li { width: 100%; margin-bottom: 5px; }
+            .content { width: 100%; box-sizing: border-box; }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Доступ к сервисам</h1>
+
+    <div class="page-wrapper">
+        
+        <!-- ОГЛАВЛЕНИЕ -->
+        <aside class="sidebar">
+            <strong>Содержание</strong>
+            <ul>
+                <li><a href="#mtproto">1. Прокси для Telegram</a>
+                    <ul>
+                        <li><a href="#remove-proxies">Удаление старых прокси</a></li>
+                    </ul>
+                </li>
+                <li><a href="#vpn-setup">2. Настройка VPN (Happ)</a>
+                    <ul>
+                        <li><a href="#step-1">Шаг 1. Установка</a></li>
+                        <li><a href="#step-2">Шаг 2. Первое подключение</a></li>
+                        <li><a href="#step-3">Шаг 3. Вставка ссылки</a></li>
+                        <li><a href="#step-4">Шаг 4. Резервные серверы</a></li>
+                        <li><a href="#step-5">Шаг 5. Включение VPN</a></li>
+                    </ul>
+                </li>
+                <li><a href="#split-routing">3. Сплит-роутинг</a>
+                    <ul>
+                        <li><a href="#split-0">Шаг 0. Настройки</a></li>
+                        <li><a href="#split-1">Шаг 1-2. Меню</a></li>
+                        <li><a href="#split-3">Шаг 3-4. Импорт</a></li>
+                        <li><a href="#split-5">Шаг 5. Проверка баз</a></li>
+                        <li><a href="#split-errors">Возможные проблемы</a></li>
+                    </ul>
+                </li>
+                <li><a href="#app-bypass">4. Исключение приложений</a>
+                    <ul>
+                        <li><a href="#bypass-1">Шаг 1. Настройки</a></li>
+                        <li><a href="#bypass-2">Шаг 2. Меню</a></li>
+                        <li><a href="#bypass-3">Шаг 3. Выбор приложений</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- ОСНОВНОЙ КОНТЕНТ -->
+        <main class="content">
+            <!-- ПРОКСИ -->
+            <div class="block" id="mtproto">
+                <h2>Прокси для Telegram (MTProto)</h2>
+                <p>Нажмите на кнопку ниже, чтобы запросить актуальные настройки прокси у бота (откроется диалог в Telegram):</p>
+                <a href="tg://resolve?domain=paraguay_cocktail_kick_bot&start=get_mtproto" class="button">Получить прокси в Telegram-боте</a>
+
+                <div class="alert-box" id="remove-proxies">
+                    <strong>Удаление старых прокси</strong>
+                    <p style="margin-top: 0; margin-bottom: 10px;">Небольшое видео, как удалить неработающие MTProto подключения</p>
+                    <p style="margin-top: 0; margin-bottom: 5px;">Информация, на которую стоит обратить внимание:</p>
+                    <ul style="margin-top: 0; margin-bottom: 15px; padding-left: 20px;">
+                        <li>порт</li>
+                        <li>ключ (достаточно первых нескольких символов)</li>
+                    </ul>
+                    <video src="img/delete-old-proxies.mp4" controls playsinline style="width: 100%; max-width: 350px; border-radius: 8px; display: block; border: 1px solid rgba(133, 100, 4, 0.2); box-shadow: 0 2px 5px rgba(0,0,0,0.05);"></video>
+                </div>
+            </div>
+
+            <!-- VPN HAPP -->
+            <div class="block" id="vpn-setup">
+                <h2>Настройка VPN через клиент Happ</h2>
+                
+                <div class="why-happ">
+                    <strong>Почему я решил использовать его:</strong>
+                    <ul>
+                        <li><strong>Универсальность:</strong> есть версии абсолютно под все платформы</li>
+                        <li><strong>Удобство:</strong> интуитивно понятный интерфейс без лишнего перегруза</li>
+                        <li><strong>Гибкость:</strong> настройки легко импортируются по ссылкам</li>
+                        <li><strong>Стабильность:</strong> здесь нормально работают современные протоколы</li>
+                        <li>унифицированный клиент позволяет поддерживать одинаковую конфигурацию у всех пользователей</li>
+                    </ul>
+                </div>
+
+                <h3 id="step-1">Шаг 1. Скачайте приложение Happ</h3>
+                <ul>
+                    <li><a href="https://play.google.com/store/apps/details?id=com.happproxy" target="_blank">Android (Google Play)</a></li>
+                    <li><a href="https://apps.apple.com/ru/app/happ-proxy-utility-plus/id6746188973" target="_blank">iOS (App Store)</a> | <a href="https://apps.apple.com/ru/app/happ-proxy-utility-plus/id6746188973" target="_blank">MacOS</a></li>
+                    <li><a href="https://github.com/Happ-proxy/happ-desktop/releases/latest/download/setup-Happ.x64.exe" target="_blank">Windows</a></li>
+                    <li><a href="https://github.com/Happ-proxy/happ-desktop/releases/latest/download/Happ.linux.x64.deb" target="_blank">Debian</a> | <a href="https://github.com/Happ-proxy/happ-desktop/releases/latest/download/Happ.linux.x64.rpm" target="_blank">RedHat (rpm)</a></li>
+                </ul>
+                <div class="image-gallery">
+                    <img src="img/1.jpg" onclick="openLightbox(this)" alt="Шаг 1">
+                    <img src="img/2.jpg" onclick="openLightbox(this)" alt="Шаг 1">
+                </div>
+
+                <h3 id="step-2">Шаг 2. Запросите первую ссылку подключения</h3>
+                <p>Нажмите на кнопку ниже, чтобы бот прислал вам персональную ссылку Backup VPN прямо в чат:</p>
+                <a href="tg://resolve?domain=paraguay_cocktail_kick_bot&start=get_sub_backup" class="button copy-btn">Запросить Backup VPN в боте</a>
+                <div class="image-gallery">
+                    <img src="img/3.jpg" onclick="openLightbox(this)" alt="Шаг 2">
+                    <img src="img/4.jpg" onclick="openLightbox(this)" alt="Шаг 2">
+                    <img src="img/5.jpg" onclick="openLightbox(this)" alt="Шаг 2">
+                </div>
+
+                <h3 id="step-3">Шаг 3. Добавьте сервер в Happ</h3>
+                <p class="step-text">ВАЖНО: Если вы открываете приложение впервые, оно само попросит вставить скопированную из бота ссылку.</p>
+                <p>Если вы уже прокликали стартовые экраны, добавьте ссылку вручную: нажмите на значок плюса (+) в правом верхнем углу.</p>
+
+                <h3 id="step-4">Шаг 4. Добавьте основной профиль (VLESS / Reality / Trojan)</h3>
+                <p>Запросите в боте ссылку на основной протокол подключения:</p>
+                <a href="tg://resolve?domain=paraguay_cocktail_kick_bot&start=get_sub_main" class="button copy-btn">Запросить основной VPN профиль в боте</a>
+                <div class="image-gallery">
+                    <img src="img/6.jpg" onclick="openLightbox(this)" alt="Шаг 4">
+                </div>
+
+                <h3 id="step-5">Шаг 5. Как выбрать сервер и включить VPN</h3>
+                <p>Обратите внимание на подключения: <strong>белая полоска слева</strong> означает, что именно этот сервер сейчас выбран для работы.</p>
+                <p>Чтобы пустить трафик через VPN, просто нажмите на большую кнопку включения в верхней части экрана.</p>
+                <div class="image-gallery">
+                    <img src="img/7.jpg" onclick="openLightbox(this)" alt="Шаг 5">
+                    <img src="img/8.jpg" onclick="openLightbox(this)" alt="Шаг 5">
+                </div>
+            </div>
+
+            <!-- СПЛИТ-РОУТИНГ -->
+            <div class="block" id="split-routing">
+                <h2>Сплит-роутинг (Раздельное туннелирование)</h2>
+                <p>Сплит-роутинг — это функция, которая позволяет направлять одну часть интернет-трафика через VPN, а другую — напрямую через вашего провайдера.</p>
+
+                <h3 id="split-0">Шаг 0. Получите профиль маршрутизации</h3>
+                <p>Нажмите кнопку ниже, чтобы бот выслал вам актуальный профиль маршрутизации (содержит правила `domain:ru` для пуска российских ресурсов напрямую без VPN):</p>
+                <a href="tg://resolve?domain=paraguay_cocktail_kick_bot&start=get_split_route" class="button copy-btn">Запросить профиль маршрутизации в боте</a>
+
+                <h3 id="split-1">Шаг 1. Откройте настройки</h3>
+                <p>На главном экране приложения нажмите на иконку шестеренки.</p>
+                <div class="image-gallery">
+                    <img src="img/split1.jpg" onclick="openLightbox(this)" alt="Сплит - Шаг 1">
+                </div>
+
+                <h3 id="split-2">Шаг 2. Перейдите в маршрутизацию</h3>
+                <p>В меню выберите <strong>Настройки туннеля -> Маршрутизация</strong>.</p>
+                <div class="image-gallery">
+                    <img src="img/split2.jpg" onclick="openLightbox(this)" alt="Сплит - Шаг 2">
+                </div>
+
+                <h3 id="split-3">Шаг 3. Откройте меню</h3>
+                <p>Нажмите на значок с тремя вертикальными точками (кебаб-меню) в правом верхнем углу экрана.</p>
+                <div class="image-gallery">
+                    <img src="img/split3.jpg" onclick="openLightbox(this)" alt="Сплит - Шаг 3">
+                </div>
+
+                <h3 id="split-4">Шаг 4. Импортируйте профиль</h3>
+                <p>В выпадающем списке выберите пункт <strong>Импортировать из буфера обмена</strong>.</p>
+                <div class="image-gallery">
+                    <img src="img/split4.jpg" onclick="openLightbox(this)" alt="Сплит - Шаг 4">
+                </div>
+
+                <h3 id="split-5">Шаг 5. Проверьте загрузку баз</h3>
+                <p>Убедитесь, что маршрутизация активирована. Затем откройте загруженный профиль (Правила маршрутизации) и проверьте, что оба файла баз данных — <code>geosite.dat</code> и <code>geoip.dat</code> — успешно скачались и загружены в приложение.</p>
+                <div class="image-gallery">
+                    <img src="img/split5-1.jpg" onclick="openLightbox(this)" alt="Сплит - Шаг 5 (Фото 1)">
+                    <img src="img/split5-2.jpg" onclick="openLightbox(this)" alt="Сплит - Шаг 5 (Фото 2)">
+                </div>
+
+                <div class="alert-box" id="split-errors">
+                    <strong>Возможные проблемы</strong>
+                    <p>Иногда на главном экране приложения, в левом верхнем углу, может появиться уведомление: <em>«Ошибка загрузки гео файлов»</em>. Как это исправить:</p>
+                    <ul>
+                        <li><strong>Шаг 1.</strong> Перейдите в Настройки (шестеренка) -> Настройки туннеля -> Маршрутизация. В строке вашего активного профиля справа будет гореть красный треугольник с восклицательным знаком. Нажмите на этот профиль, чтобы открыть его.</li>
+                        <div class="image-gallery" style="margin: 10px 0;">
+                            <img src="img/split_debug1.jpg" onclick="openLightbox(this)" alt="Сплит - Траблшутинг">
+                        </div>
+                        <li><strong>Шаг 2.</strong> В верхней части экрана вы увидите подробное сообщение: <em>«Гео-файлы повреждены или отсутствуют. Попробуйте загрузить еще раз.»</em></li>
+                        <div class="image-gallery" style="margin: 10px 0;">
+                            <img src="img/split_debug2.jpg" onclick="openLightbox(this)" alt="Сплит - Траблшутинг">
+                        </div>
+                        <li><strong>Шаг 3.</strong> В списке ниже найдите файл (например, <code>geoip.dat</code> или <code>geosite.dat</code>), в статусе которого указана ошибка, и нажмите кнопку загрузки рядом с ним, чтобы скачать базу заново.</li>
+                        <div class="image-gallery" style="margin: 10px 0;">
+                            <img src="img/split_debug3.jpg" onclick="openLightbox(this)" alt="Сплит - Траблшутинг">
+                        </div>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- ИСКЛЮЧЕНИЕ ПРИЛОЖЕНИЙ -->
+            <div class="block" id="app-bypass">
+                <h2>Исключение приложений (Байпассинг)</h2>
+                
+                <p><strong>Байпассинг (от англ. bypass — обход)</strong> — это функция, которая позволяет выбрать конкретные приложения, которые будут выходить в интернет напрямую, минуя VPN.</p>
+                
+                <p><strong>Как это работает и зачем нужно:</strong> По умолчанию, когда VPN включен, трафик абсолютно всех ваших приложений идет через зарубежный сервер. Однако многие российские внутренние сервисы (например, банковские приложения, Госуслуги или онлайн-кинотеатры) намеренно блокируют доступ с иностранных IP-адресов.</p>
+                <p>Чтобы не выключать VPN каждый раз, когда нужно зайти в банк или посмотреть сериал, вы просто добавляете эти программы в список исключений. Их трафик пойдет через вашего обычного оператора связи.</p>
+
+                <h3 id="bypass-1">Шаг 1. Откройте настройки</h3>
+                <p>На главном экране приложения нажмите на иконку шестеренки.</p>
+                <div class="image-gallery">
+                    <img src="img/bypass1.jpg" onclick="openLightbox(this)" alt="Байпассинг - Шаг 1">
+                </div>
+
+                <h3 id="bypass-2">Шаг 2. Перейдите в настройки проксирования</h3>
+                <p>В меню выберите <strong>Настройки туннеля -> Прокси для выбранных приложений</strong>.</p>
+                <div class="image-gallery">
+                    <img src="img/bypass2.jpg" onclick="openLightbox(this)" alt="Байпассинг - Шаг 2">
+                </div>
+
+                <h3 id="bypass-3">Шаг 3. Выберите приложения для обхода</h3>
+                <p>Переключитесь на вкладку <strong>Обход</strong> в верхней части экрана. В открывшемся списке найдите приложения, которые должны работать без VPN (для быстрого поиска воспользуйтесь значком лупы в правом верхнем углу), и поставьте напротив них галочки.</p>
+                <div class="image-gallery">
+                    <img src="img/bypass3-1.jpg" onclick="openLightbox(this)" alt="Байпассинг - Шаг 3">
+                    <img src="img/bypass3-2.jpg" onclick="openLightbox(this)" alt="Байпассинг - Шаг 3">
+                    <img src="img/bypass3-3.jpg" onclick="openLightbox(this)" alt="Байпассинг - Шаг 3">
+                </div>
+            </div>
+            
+        </main>
+    </div>
+
+    <!-- Скрытый блок для показа увеличенной картинки -->
+    <div id="lightbox">
+        <img id="lightbox-img" src="">
+    </div>
+
+    <script>
+        /* --- ЛОГИКА ГАЛЕРЕИ И ИЗОБРАЖЕНИЙ --- */
+        let currentGallery = [];
+        let currentIndex = 0;
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+
+        function openLightbox(imgElement) {
+            const galleryDiv = imgElement.closest('.image-gallery');
+            currentGallery = Array.from(galleryDiv.querySelectorAll('img'));
+            currentIndex = currentGallery.indexOf(imgElement);
+            
+            updateLightboxImage();
+            
+            lightbox.style.display = 'flex';
+            setTimeout(() => lightbox.classList.add('show'), 10);
+            
+            history.pushState({ lightboxOpen: true }, "");
+        }
+
+        function updateLightboxImage() {
+            lightboxImg.src = currentGallery[currentIndex].src;
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('show');
+            setTimeout(() => { lightbox.style.display = 'none'; }, 200); 
+        }
+
+        function closeAndPopHistory() {
+            if (lightbox.style.display === 'flex') {
+                closeLightbox();
+                if (history.state && history.state.lightboxOpen) {
+                    history.back(); 
+                }
+            }
+        }
+
+        function showNext() {
+            if (currentGallery.length > 1) {
+                currentIndex = (currentIndex + 1) % currentGallery.length;
+                updateLightboxImage();
+            }
+        }
+        function showPrev() {
+            if (currentGallery.length > 1) {
+                currentIndex = (currentIndex - 1 + currentGallery.length) % currentGallery.length;
+                updateLightboxImage();
+            }
+        }
+
+        lightbox.addEventListener('click', function(e) {
+            if(e.target === lightbox) { closeAndPopHistory(); }
+        });
+
+        window.addEventListener('popstate', function(e) {
+            closeLightbox(); 
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (lightbox.style.display === 'flex') {
+                if (e.key === 'Escape') closeAndPopHistory();
+                if (e.key === 'ArrowRight') showNext();
+                if (e.key === 'ArrowLeft') showPrev();
+            }
+        });
+
+        let touchStartX = 0;
+        let touchStartY = 0;
+
+        lightbox.addEventListener('touchstart', function(e) {
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
+        }, {passive: true});
+
+        lightbox.addEventListener('touchend', function(e) {
+            let touchEndX = e.changedTouches[0].screenX;
+            let touchEndY = e.changedTouches[0].screenY;
+            handleSwipe(touchEndX - touchStartX, touchEndY - touchStartY);
+        }, {passive: true});
+
+        function handleSwipe(diffX, diffY) {
+            if (Math.max(Math.abs(diffX), Math.abs(diffY)) < 40) return;
+            if (Math.abs(diffX) > Math.abs(diffY)) {
+                if (diffX < 0) showNext(); 
+                else showPrev();           
+            } else {
+                closeAndPopHistory();
+            }
+        }
+    </script>
+</body>
+</html>
